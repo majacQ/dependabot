@@ -1,0 +1,50 @@
+{
+  "name": "xunit-mattermost-reporter",
+  "version": "1.0.1",
+  "private": true,
+  "description": "xUnit results to Mattermost Github Action",
+  "main": "src/main.ts",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write **/*.ts",
+    "format-check": "prettier --check **/*.ts",
+    "lint": "eslint src/**/*.ts",
+    "pack": "ncc build",
+    "test": "jest --clearCache && jest --coverage",
+    "build:all": "npm run build && npm run format && npm run lint && npm run pack && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/growse/xunit-mattermost-reporter.git"
+  },
+  "keywords": [
+    "actions",
+    "node",
+    "setup"
+  ],
+  "author": "Andrew Rowson",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0",
+    "@types/bent": "^7.3.2",
+    "bent": "^7.3.12",
+    "junitxml-to-javascript": "^1.1.4",
+    "moment": "^2.29.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.15",
+    "@types/node": "^14.14.6",
+    "@typescript-eslint/parser": "^4.6.1",
+    "@zeit/ncc": "^0.22.3",
+    "eslint": "^7.12.1",
+    "eslint-plugin-github": "^3.4.1",
+    "eslint-plugin-jest": "^24.1.0",
+    "jest": "^25.5.4",
+    "jest-circus": "^26.6.2",
+    "js-yaml": "^3.14.0",
+    "prettier": "^2.1.2",
+    "ts-jest": "^25.5.1",
+    "typescript": "^3.9.7"
+  }
+}
