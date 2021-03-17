@@ -1,0 +1,8 @@
+/.bundle
+/.git
+/tmp/
+/helpers
+/spec
+gitignored
+/bundler/helpers/helpers/
+/python/helpers/helpers/
