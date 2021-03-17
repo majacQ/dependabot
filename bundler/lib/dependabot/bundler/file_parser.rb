@@ -1,0 +1,304 @@
+# frozen_string_literal: true
+
+# TODO: Remove/Replace?
+#
+# Right now we are using OpenStructs to 'stand in' for Bundler::Dependency or
+# Gem::Dependency objects we used to get via the Bundler API and now get
+# from a marshalled JSON object retrieved from the native helper script
+#
+# The final version is refacor anywhere we use these classes to use
+# Dependabot::Dependency objects and instantiate them from the JSON object
+# retrieved via the shell-out to the native helper
+require "ostruct"
+
+require "dependabot/dependency"
+require "dependabot/file_parsers"
+require "dependabot/file_parsers/base"
+require "dependabot/bundler/file_updater/lockfile_updater"
+require "dependabot/bundler/native_helpers"
+require "dependabot/bundler/version"
+require "dependabot/shared_helpers"
+require "dependabot/errors"
+
+module Dependabot
+  module Bundler
+    class FileParser < Dependabot::FileParsers::Base
+      require "dependabot/file_parsers/base/dependency_set"
+      require "dependabot/bundler/file_parser/file_preparer"
+      require "dependabot/bundler/file_parser/gemfile_declaration_finder"
+
+      def parse
+        dependency_set = DependencySet.new
+        dependency_set += gemfile_dependencies
+        dependency_set += gemspec_dependencies
+        dependency_set += lockfile_dependencies
+        dependency_set.dependencies
+      end
+
+      private
+
+      def gemfile_dependencies
+        dependencies = DependencySet.new
+
+        return dependencies unless gemfile
+
+        [gemfile, *evaled_gemfiles].each do |file|
+          parsed_gemfile.each do |dep|
+            gemfile_declaration_finder =
+              GemfileDeclarationFinder.new(dependency: dep, gemfile: file)
+            next unless gemfile_declaration_finder.gemfile_includes_dependency?
+
+            dependencies <<
+              Dependency.new(
+                name: dep.name,
+                version: dependency_version(dep.name)&.to_s,
+                requirements: [{
+                  requirement: gemfile_declaration_finder.enhanced_req_string,
+                  groups: dep.groups.map(&:to_sym),
+                  source: dep.source&.transform_keys(&:to_sym),
+                  file: file.name
+                }],
+                package_manager: "bundler"
+              )
+          end
+        end
+
+        dependencies
+      end
+
+      def gemspec_dependencies
+        dependencies = DependencySet.new
+
+        gemspecs.each do |gemspec|
+          parsed_gemspec(gemspec).each do |dependency|
+            dependencies <<
+              Dependency.new(
+                name: dependency.name,
+                version: dependency_version(dependency.name)&.to_s,
+                requirements: [{
+                  requirement: dependency.requirement.to_s,
+                  groups: if dependency.type == "runtime"
+                            ["runtime"]
+                          else
+                            ["development"]
+                          end,
+                  source: dependency.source&.transform_keys(&:to_sym),
+                  file: gemspec.name
+                }],
+                package_manager: "bundler"
+              )
+          end
+        end
+
+        dependencies
+      end
+
+      def lockfile_dependencies
+        dependencies = DependencySet.new
+
+        return dependencies unless lockfile
+
+        # Create a DependencySet where each element has no requirement. Any
+        # requirements will be added when combining the DependencySet with
+        # other DependencySets.
+        parsed_lockfile.specs.each do |dependency|
+          next if dependency.source.is_a?(::Bundler::Source::Path)
+
+          dependencies <<
+            Dependency.new(
+              name: dependency.name,
+              version: dependency_version(dependency.name)&.to_s,
+              requirements: [],
+              package_manager: "bundler",
+              subdependency_metadata: [{
+                production: production_dep_names.include?(dependency.name)
+              }]
+            )
+        end
+
+        dependencies
+      end
+
+      def parsed_gemfile
+        @parsed_gemfile ||=
+          SharedHelpers.in_a_temporary_repo_directory(base_directory,
+                                                      repo_contents_path) do
+            write_temporary_dependency_files
+
+            deps = SharedHelpers.run_helper_subprocess(
+              command: NativeHelpers.helper_path,
+              function: "parsed_gemfile",
+              args: {
+                gemfile_name: gemfile.name,
+                lockfile_name: lockfile&.name,
+                dir: Dir.pwd
+              }
+            )
+            deps.map do |dep_hash|
+              OpenStruct.new(dep_hash)
+            end
+          end
+      rescue SharedHelpers::HelperSubprocessFailed => e
+        handle_marshall_error(e) if e.message == "marshal data too short"
+
+        msg = e.message.force_encoding("UTF-8").encode
+        raise Dependabot::DependencyFileNotEvaluatable, msg
+      end
+
+      def handle_marshall_error(err)
+        msg = "Error evaluating your dependency files: #{err.message}"
+        raise Dependabot::DependencyFileNotEvaluatable, msg
+      end
+
+      def parsed_gemspec(file)
+        @parsed_gemspecs ||= {}
+        @parsed_gemspecs[file.name] ||=
+          SharedHelpers.in_a_temporary_repo_directory(base_directory,
+                                                      repo_contents_path) do
+            write_temporary_dependency_files
+
+            deps = SharedHelpers.run_helper_subprocess(
+              command: NativeHelpers.helper_path,
+              function: "parsed_gemspec",
+              args: {
+                gemspec_name: file.name,
+                lockfile_name: lockfile&.name,
+                dir: Dir.pwd
+              }
+            )
+            deps.map do |dep_hash|
+              OpenStruct.new(dep_hash)
+            end
+          end
+      rescue SharedHelpers::HelperSubprocessFailed => e
+        raise Dependabot::DependencyFileNotEvaluatable, e.message
+      end
+
+      def base_directory
+        dependency_files.first.directory
+      end
+
+      def prepared_dependency_files
+        @prepared_dependency_files ||=
+          FilePreparer.new(dependency_files: dependency_files).
+          prepared_dependency_files
+      end
+
+      def write_temporary_dependency_files
+        prepared_dependency_files.each do |file|
+          path = file.name
+          FileUtils.mkdir_p(Pathname.new(path).dirname)
+          File.write(path, file.content)
+        end
+      end
+
+      def check_required_files
+        file_names = dependency_files.map(&:name)
+
+        return if file_names.any? do |name|
+          name.end_with?(".gemspec") && !name.include?("/")
+        end
+
+        return if gemfile
+
+        raise "A gemspec or Gemfile must be provided!"
+      end
+
+      def dependency_version(dependency_name)
+        return unless lockfile
+
+        spec = parsed_lockfile.specs.find { |s| s.name == dependency_name }
+
+        # Not all files in the Gemfile will appear in the Gemfile.lock. For
+        # instance, if a gem specifies `platform: [:windows]`, and the
+        # Gemfile.lock is generated on a Linux machine, the gem will be not
+        # appear in the lockfile.
+        return unless spec
+
+        # If the source is Git we're better off knowing the SHA-1 than the
+        # version.
+        if spec.source.instance_of?(::Bundler::Source::Git)
+          return spec.source.revision
+        end
+
+        spec.version
+      end
+
+      def gemfile
+        @gemfile ||= get_original_file("Gemfile") ||
+                     get_original_file("gems.rb")
+      end
+
+      def evaled_gemfiles
+        dependency_files.
+          reject { |f| f.name.end_with?(".gemspec") }.
+          reject { |f| f.name.end_with?(".specification") }.
+          reject { |f| f.name.end_with?(".lock") }.
+          reject { |f| f.name.end_with?(".ruby-version") }.
+          reject { |f| f.name == "Gemfile" }.
+          reject { |f| f.name == "gems.rb" }.
+          reject { |f| f.name == "gems.locked" }
+      end
+
+      def lockfile
+        @lockfile ||= get_original_file("Gemfile.lock") ||
+                      get_original_file("gems.locked")
+      end
+
+      def parsed_lockfile
+        @parsed_lockfile ||=
+          ::Bundler::LockfileParser.new(sanitized_lockfile_content)
+      end
+
+      def production_dep_names
+        @production_dep_names ||=
+          (gemfile_dependencies + gemspec_dependencies).dependencies.
+          select { |dep| production?(dep) }.
+          flat_map { |dep| expanded_dependency_names(dep) }.
+          uniq
+      end
+
+      def expanded_dependency_names(dep)
+        spec = parsed_lockfile.specs.find { |s| s.name == dep.name }
+        return [dep.name] unless spec
+
+        [
+          dep.name,
+          *spec.dependencies.flat_map { |d| expanded_dependency_names(d) }
+        ]
+      end
+
+      def production?(dependency)
+        groups = dependency.requirements.
+                 flat_map { |r| r.fetch(:groups) }.
+                 map(&:to_s)
+
+        return true if groups.empty?
+        return true if groups.include?("runtime")
+        return true if groups.include?("default")
+
+        groups.any? { |g| g.include?("prod") }
+      end
+
+      def sanitized_lockfile_content
+        regex = FileUpdater::LockfileUpdater::LOCKFILE_ENDING
+        lockfile.content.gsub(regex, "")
+      end
+
+      def gemspecs
+        # Path gemspecs are excluded (they're supporting files)
+        @gemspecs ||= prepared_dependency_files.
+                      select { |file| file.name.end_with?(".gemspec") }.
+                      reject(&:support_file?)
+      end
+
+      def imported_ruby_files
+        dependency_files.
+          select { |f| f.name.end_with?(".rb") }.
+          reject { |f| f.name == "gems.rb" }
+      end
+    end
+  end
+end
+
+Dependabot::FileParsers.register("bundler", Dependabot::Bundler::FileParser)
