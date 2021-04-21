@@ -17,8 +17,13 @@
   },
   "homepage": "https://github.com/gocardless/bump-test#readme",
   "dependencies": {
+  <<<<<<< snyk-upgrade-bce23cb182dd58118377922a9ab45255
     "lodash": "^1.2.1",
     "chalk": "0.5.1",
+  =======
+    "lodash": "^4.17.20",
+    "chalk": "0.4.0",
+  >>>>>>> main
     "stopwords": "0.0.1"
   },
   "devDependencies": {
