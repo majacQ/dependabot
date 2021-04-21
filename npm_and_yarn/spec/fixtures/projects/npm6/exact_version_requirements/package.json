@@ -18,7 +18,7 @@
   "homepage": "https://github.com/gocardless/bump-test#readme",
   "dependencies": {
     "chalk": "0.3.0",
-    "react": "15.3",
+    "react": "15.7.0",
     "etag": "^1.1.0"
   }
 }
