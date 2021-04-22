@@ -29,8 +29,12 @@
   =======
     "eslint-plugin-markdown": "1.0.2",
     "eslint-plugin-promise": "3.4.2",
+  <<<<<<< snyk-upgrade-a210571913cd3c0b21c746069bdaf413
+    "eslint-plugin-standard": "2.3.1",
+  =======
   >>>>>>> main
     "eslint-plugin-standard": "2.0.1",
+  >>>>>>> main
     "istanbul": "0.4.5",
     "mocha": "6.2.3",
     "seedrandom": "2.4.4"
