@@ -18,8 +18,13 @@
     "benchmark": "2.1.4",
     "eslint": "4.18.2",
     "eslint-config-standard": "6.2.1",
+  <<<<<<< snyk-upgrade-806aeefe0075e9678cb87c7c0899af4b
+    "eslint-plugin-markdown": "1.0.0",
+    "eslint-plugin-promise": "3.8.0",
+  =======
     "eslint-plugin-markdown": "1.0.2",
     "eslint-plugin-promise": "3.4.2",
+  >>>>>>> main
     "eslint-plugin-standard": "2.0.1",
     "istanbul": "0.4.5",
     "mocha": "6.2.3",
