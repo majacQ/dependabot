@@ -16,14 +16,24 @@
   "devDependencies": {
     "beautify-benchmark": "0.2.4",
     "benchmark": "2.1.3",
-    "eslint": "3.15.0",
+    "eslint": "3.19.0",
     "eslint-config-standard": "6.2.1",
+  <<<<<<< snyk-upgrade-1133804f53039616531da35d37ae4200
     "eslint-plugin-markdown": "1.0.0-beta.3",
     "eslint-plugin-promise": "3.8.0",
     "eslint-plugin-standard": "2.0.1",
+  =======
+    "eslint-plugin-markdown": "1.0.2",
+    "eslint-plugin-promise": "3.8.0",
+    "eslint-plugin-standard": "2.3.1",
+  >>>>>>> main
     "istanbul": "0.4.5",
+  <<<<<<< snyk-upgrade-8c66b11c5c8f95c5c0de75a58a55ede6
     "mocha": "1.21.5",
-    "seedrandom": "2.4.2"
+  =======
+    "mocha": "5.0.3",
+  >>>>>>> main
+    "seedrandom": "2.4.4"
   },
   "files": [
     "LICENSE",
