@@ -15,15 +15,33 @@
   "repository": "jshttp/etag",
   "devDependencies": {
     "beautify-benchmark": "0.2.4",
+  <<<<<<< snyk-upgrade-8c07b485ebd75777691dd9eb80c3e207
     "benchmark": "2.1.3",
-    "eslint": "3.15.0",
+    "eslint": "4.19.1",
+  =======
+    "benchmark": "2.1.4",
+    "eslint": "4.18.2",
+  >>>>>>> main
     "eslint-config-standard": "6.2.1",
-    "eslint-plugin-markdown": "1.0.0-beta.3",
+  <<<<<<< snyk-upgrade-806aeefe0075e9678cb87c7c0899af4b
+    "eslint-plugin-markdown": "1.0.0",
+    "eslint-plugin-promise": "3.8.0",
+  =======
+    "eslint-plugin-markdown": "1.0.2",
     "eslint-plugin-promise": "3.4.2",
+  <<<<<<< snyk-upgrade-4fe8a71fab4d5f11f1261073c92c7ba5
     "eslint-plugin-standard": "2.3.1",
+  =======
+  <<<<<<< snyk-upgrade-a210571913cd3c0b21c746069bdaf413
+    "eslint-plugin-standard": "2.3.1",
+  =======
+  >>>>>>> main
+    "eslint-plugin-standard": "2.0.1",
+  >>>>>>> main
+  >>>>>>> main
     "istanbul": "0.4.5",
-    "mocha": "1.21.5",
-    "seedrandom": "2.4.2"
+    "mocha": "6.2.3",
+    "seedrandom": "2.4.4"
   },
   "files": [
     "LICENSE",
