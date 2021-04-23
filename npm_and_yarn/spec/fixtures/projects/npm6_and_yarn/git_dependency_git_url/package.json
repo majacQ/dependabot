@@ -18,8 +18,13 @@
   "homepage": "https://github.com/gocardless/bump-test#readme",
   "dependencies": {
     "chalk": "0.5.1",
+  <<<<<<< snyk-fix-955123294051a14ed8f846436c046b43
     "lodash": "^4.17.20",
     "stopwords": "0.0.1"
+  =======
+    "lodash": "^1.2.1",
+    "stopwords": "0.0.9"
+  >>>>>>> main
   },
   "devDependencies": {
     "slick-carousel": "git://github.com/brianfryer/slick"
