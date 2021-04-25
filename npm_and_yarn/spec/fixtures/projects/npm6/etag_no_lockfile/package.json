@@ -24,6 +24,9 @@
     "eslint": "5.0.0",
   >>>>>>> main
     "eslint-config-standard": "6.2.1",
+  <<<<<<< snyk-upgrade-0ef82b7f85622744b139dc73956887b3
+    "eslint-plugin-markdown": "1.0.2",
+  =======
     "eslint-plugin-markdown": "1.0.0-beta.3",
   =======
     "eslint": "4.19.1",
@@ -37,6 +40,7 @@
     "eslint-plugin-promise": "3.8.0",
   =======
     "eslint-plugin-markdown": "1.0.2",
+  >>>>>>> main
   >>>>>>> main
     "eslint-plugin-promise": "3.4.2",
   <<<<<<< snyk-upgrade-4fe8a71fab4d5f11f1261073c92c7ba5
