@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/waltfy/PROTO_TEST#readme",
   "dependencies": {
-    "fetch-factory": "*"
+    "fetch-factory": "0.2.1"
   }
 }
