@@ -22,7 +22,7 @@ docutils==0.14            # via botocore
 ecdsa==0.13               # via python-jose
 future==0.16.0            # via python-jose
 idna==2.7                 # via cryptography, requests
-jinja2==2.10              # via moto
+jinja2==2.11.3              # via moto
 jmespath==0.9.3           # via boto3, botocore
 jsondiff==1.1.1           # via moto
 jsonpickle==1.0           # via aws-xray-sdk
