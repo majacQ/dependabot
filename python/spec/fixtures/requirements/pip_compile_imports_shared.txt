@@ -18,7 +18,7 @@ docker-pycreds==0.3.0     # via docker
 docker==3.5.1             # via moto
 docutils==0.14            # via botocore
 idna==2.7                 # via cryptography, requests
-jinja2==2.10              # via moto
+jinja2==2.11.3              # via moto
 jmespath==0.9.3           # via boto3, botocore
 jsondiff==1.1.1           # via moto
 jsonpickle==1.0           # via aws-xray-sdk
@@ -30,12 +30,12 @@ pyaml==18.11.0            # via moto
 pycparser==2.19           # via cffi
 python-dateutil==2.6.0
 pytz==2018.7              # via moto
-pyyaml==3.13              # via pyaml
+pyyaml==5.4              # via pyaml
 requests==2.20.1          # via aws-xray-sdk, docker, moto, responses
 responses==0.10.4         # via moto
 s3transfer==0.1.13        # via boto3
 six==1.11.0               # via cryptography, docker, docker-pycreds, mock, moto, python-dateutil, responses, websocket-client
-urllib3==1.24.1           # via botocore, requests
+urllib3==1.24.3           # via botocore, requests
 websocket-client==0.54.0  # via docker
 werkzeug==0.14.1          # via moto
 wrapt==1.10.11            # via aws-xray-sdk
