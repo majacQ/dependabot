@@ -11,7 +11,11 @@
   "dependencies": {
     "@dependabot/yarn-lib": "^1.21.1",
     "@npmcli/arborist": "^2.8.2",
+  <<<<<<< snyk-fix-d9e384629bd23fee89c7ef2ac632d421
+    "detect-indent": "^6.0.0",
+  =======
     "detect-indent": "^7.0.0",
+  >>>>>>> master
     "npm6": "npm:npm@6.14.11",
     "semver": "^7.3.4"
   },
