@@ -8,7 +8,7 @@
   "version": "0.0.1",
   "main": "gulpfile.js",
   "dependencies": {
-    "fetch-factory": "0.1.x",
+    "fetch-factory": "0.2.1",
     "gulp": "^4.0.0-alpha.2"
   },
   "scripts": {
