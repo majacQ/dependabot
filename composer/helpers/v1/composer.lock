@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1a6353d9eec6f02da4303e9ab3de7dc0",
+    "content-hash": "b7bd390fbffec8429d41c2a13549e3cb",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1993,16 +1993,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.0.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "0d13a99513182e521271d46bde8f28caa4f84d97"
+                "reference": "72b04d97b5e6e60a081f17c416fef35bd521120b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/0d13a99513182e521271d46bde8f28caa4f84d97",
-                "reference": "0d13a99513182e521271d46bde8f28caa4f84d97",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/72b04d97b5e6e60a081f17c416fef35bd521120b",
+                "reference": "72b04d97b5e6e60a081f17c416fef35bd521120b",
                 "shasum": ""
             },
             "require": {
@@ -2018,7 +2018,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -2049,7 +2049,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-01T06:38:20+00:00"
+            "time": "2022-01-14T15:58:47+00:00"
         },
         {
             "name": "psr/cache",
