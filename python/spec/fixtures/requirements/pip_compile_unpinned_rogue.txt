@@ -12,9 +12,10 @@ mock==2.0.0
 more-itertools==4.1.0     # via pytest
 pbr==4.0.2                # via mock
 pluggy==0.6.0             # via pytest
-py==1.5.3                 # via pytest
+py==1.10.0                 # via pytest
 pytest-forked==0.2        # via pytest-xdist
 pytest-xdist==1.22.2
 pytest==3.5.1
-requests==2.18.0          # via mock
+requests==2.20          # via mock
 six==1.11.0               # via mock, more-itertools, pytest
+urllib3>=1.26.5 # not directly required, pinned by Snyk to avoid a vulnerability
