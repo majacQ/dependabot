@@ -40,13 +40,13 @@ jupyterlab-pygments==0.1.1  # via voila
 kiwisolver==1.2.0         # via matplotlib
 librosa==0.7.2            # via -r requirements.in
 llvmlite==0.31.0          # via numba
-lxml==4.5.2               # via jupyter-contrib-nbextensions
+lxml==4.9.1               # via jupyter-contrib-nbextensions
 markupsafe==1.1.1         # via jinja2
 matplotlib==3.3.0         # via -r requirements.in
-mistune==0.8.4            # via nbconvert
+mistune==2.0.3            # via nbconvert
 nbconvert==5.6.1          # via jupyter, jupyter-contrib-nbextensions, jupyter-latex-envs, jupyter-server, notebook, voila
 nbformat==5.0.7           # via ipywidgets, jupyter-server, nbconvert, notebook
-notebook==6.4.1           # via jupyter, jupyter-contrib-core, jupyter-contrib-nbextensions, jupyter-latex-envs, jupyter-nbextensions-configurator, widgetsnbextension
+notebook==6.4.12           # via jupyter, jupyter-contrib-core, jupyter-contrib-nbextensions, jupyter-latex-envs, jupyter-nbextensions-configurator, widgetsnbextension
 numba==0.48.0             # via -r requirements.in, librosa, resampy
 numpy==1.19.0             # via -r requirements.in, jax, librosa, matplotlib, numba, opt-einsum, resampy, scikit-learn, scipy
 opt-einsum==3.2.1         # via jax
