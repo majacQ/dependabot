@@ -4,18 +4,23 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
   "repository": {
-      "type": "git",
-      "url": "git+https://github.com/waltfy/PROTO_TEST.git"
+    "type": "git",
+    "url": "git+https://github.com/waltfy/PROTO_TEST.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-      "url": "https://github.com/waltfy/PROTO_TEST/issues"
+    "url": "https://github.com/waltfy/PROTO_TEST/issues"
   },
   "homepage": "https://github.com/waltfy/PROTO_TEST#readme",
   "dependencies": {
-      "fetch-factory": ""
-  }}
+    "fetch-factory": "",
+    "@snyk/protect": "latest"
+  },
+  "snyk": true
+}
