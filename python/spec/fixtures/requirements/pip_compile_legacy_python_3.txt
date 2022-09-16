@@ -5,5 +5,5 @@
 #    pip-compile requirements.in
 #
 django-adv-cache-tag==0.2.1
-httplib2==0.12.3          # via oauth2
+httplib2==0.19.0          # via oauth2
 oauth2==1.5.211
