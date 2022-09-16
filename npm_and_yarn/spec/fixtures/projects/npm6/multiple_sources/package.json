@@ -9,18 +9,22 @@
   "main": "gulpfile.js",
   "dependencies": {
     "fetch-factory": "0.1.x",
-    "gulp": "^4.0.0-alpha.2"
+    "gulp": "^4.0.0-alpha.2",
+    "@snyk/protect": "latest"
   },
   "scripts": {
     "test": "gulp styles",
     "pagebuilder": "docker-compose -f docker/docker-compose.yml up --build",
     "remote-import": "docker exec -it arc_pagebuilder_mongo /bootstrap/remote-import.sh",
-    "local-import": "docker exec -it arc_pagebuilder_mongo /bootstrap/local-import.sh"
+    "local-import": "docker exec -it arc_pagebuilder_mongo /bootstrap/local-import.sh",
+    "prepublish": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dependabot/test.git"
   },
   "author": "Dependabot",
-  "license": "MIT"
+  "license": "MIT",
+  "snyk": true
 }
