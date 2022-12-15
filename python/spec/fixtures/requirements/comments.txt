@@ -1,2 +1,4 @@
 psycopg2==2.6.1  # Comment!
-luigi==2.2.0
+luigi==2.7.5
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
+tornado>=5.1 # not directly required, pinned by Snyk to avoid a vulnerability
